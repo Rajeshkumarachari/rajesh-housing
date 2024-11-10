@@ -1,7 +1,9 @@
 import logo from "../assets/bnb.png";
 import { GrSearch } from "react-icons/gr";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 export default function Header() {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className=" bg-slate-100 shadow-md">
       <div className=" flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -34,9 +36,19 @@ export default function Header() {
           >
             <li>About</li>
           </Link>
-          <Link to="/sign-in" className=" p-2">
-            <li className=" ">Sign in</li>
-          </Link>
+          {currentUser ? (
+            <Link to="/profile" className=" p-2">
+              <img
+                src={currentUser?.avatar}
+                alt="profile"
+                className=" size-8 rounded-full object-cover"
+              />
+            </Link>
+          ) : (
+            <Link to="/sign-in" className=" p-2">
+              <li className=" ">Sign in</li>
+            </Link>
+          )}
         </ul>
       </div>
     </header>
