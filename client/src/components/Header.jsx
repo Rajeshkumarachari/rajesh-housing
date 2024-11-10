@@ -8,7 +8,7 @@ export default function Header() {
         <Link to="/">
           <div className=" flex cursor-pointer rounded-md w-fit gap-2">
             <img src={logo} alt="logo" className=" size-7" />
-            <h1 className=" text-rose-400 text-lg sm:text-2xl font-medium">
+            <h1 className=" text-rose-500 text-lg sm:text-2xl font-medium">
               rajeshbnb
             </h1>
           </div>

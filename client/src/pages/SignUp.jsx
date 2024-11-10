@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
@@ -36,7 +37,7 @@ export default function SignUp() {
   };
   return (
     <div className="flex justify-center m-4 h-screen">
-      <div className="card bg-base-100 sm:w-[35%] w-[80%] h-[65%]  shadow-xl p-4">
+      <div className="card bg-base-100 sm:w-[35%] w-[80%] h-[80%]  shadow-xl p-4">
         <h1 className=" sm:text-3xl text-lg text-center font-medium">
           Sign Up
         </h1>
@@ -83,6 +84,7 @@ export default function SignUp() {
               <span className="loading loading-spinner text-white size-4"></span>
             )}
           </button>
+          <OAuth />
         </form>
         <div className=" flex gap-2 mt-4 ml-4">
           <p>Have an account ?</p>
