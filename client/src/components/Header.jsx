@@ -24,13 +24,13 @@ export default function Header() {
         <ul className=" flex text-lg font-normal ">
           <Link
             to="/home"
-            className=" hidden sm:inline hover:bg-slate-200 hover:underline p-2 cursor-pointer rounded-xl"
+            className=" hidden sm:inline hover:bg-slate-200 hover:underline p-2 cursor-pointer rounded-lg"
           >
             <li>Home</li>
           </Link>
           <Link
             to="/about"
-            className=" hidden sm:inline hover:bg-slate-200 hover:underline p-2 cursor-pointer rounded-xl"
+            className=" hidden sm:inline hover:bg-slate-200 hover:underline p-2 cursor-pointer rounded-lg"
           >
             <li>About</li>
           </Link>
