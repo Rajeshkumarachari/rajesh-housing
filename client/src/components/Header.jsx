@@ -38,11 +38,11 @@ export default function Header() {
           </Link>
           {currentUser ? (
             <Link to="/profile" className=" p-2">
-              <img
-                src={currentUser?.avatar}
-                alt="profile"
-                className=" size-8 rounded-full object-cover"
-              />
+              <div className="avatar">
+                <div className="ring-primary ring-offset-base-100 w-8 rounded-full ring ring-offset-2">
+                  <img src={currentUser?.avatar} />
+                </div>
+              </div>
             </Link>
           ) : (
             <Link to="/sign-in" className=" p-2">
