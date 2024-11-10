@@ -10,6 +10,9 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import {
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
@@ -76,6 +79,22 @@ export default function Profile() {
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success == false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
   return (
@@ -160,7 +179,10 @@ export default function Profile() {
           </button>
         </form>
         <div className=" flex justify-between mt-4 mx-10">
-          <span className=" border-red-500 border font-medium text-red-700 cursor-pointer flex p-2 gap-1 items-center justify-center hover:bg-red-50 rounded-lg">
+          <span
+            onClick={handleDeleteUser}
+            className=" border-red-500 border font-medium text-red-700 cursor-pointer flex p-2 gap-1 items-center justify-center hover:bg-red-50 rounded-lg"
+          >
             Delete Account <FiDelete className=" size-5 " />
           </span>
           <span className="  border-red-500 border font-medium text-red-700 cursor-pointer flex p-2 gap-1 items-center justify-center hover:bg-red-50 rounded-lg">
