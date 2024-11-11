@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiDelete } from "react-icons/fi";
 import { IoIosLogOut } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
+import { TiDeleteOutline } from "react-icons/ti";
+import { CiEdit } from "react-icons/ci";
 import {
   getDownloadURL,
   getStorage,
@@ -19,7 +21,8 @@ import {
   updateUserStart,
   updateUserSuccess,
 } from "../redux/user/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { MdOutlineExpandMore } from "react-icons/md";
 
 export default function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -30,6 +33,9 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const dispatch = useDispatch();
+  const [showListingsError, setShowListingsError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (file) {
@@ -112,6 +118,20 @@ export default function Profile() {
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(signOutUserFailure(error.message));
+    }
+  };
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingsError(true);
+        return;
+      }
+      setUserListings(data);
+    } catch (error) {
+      setShowListingsError(true);
     }
   };
   return (
@@ -235,6 +255,41 @@ export default function Profile() {
         )}
         <div className="text-green-700 mt-5 flex justify-center">
           {updateSuccess ? "User is updated successfully!" : ""}
+        </div>
+        <button
+          onClick={handleShowListings}
+          className=" text-green-700 w-full flex justify-center text-xl hover:underline font-medium"
+        >
+          Show Listings <MdOutlineExpandMore className=" size-8" />
+        </button>
+        <p className=" text-red-700 mt-4 ">
+          {showListingsError ? "Error showing listing" : ""}
+        </p>
+        <div className="">
+          {userListings &&
+            userListings.length > 0 &&
+            userListings.map((list) => (
+              <div
+                key={list._id}
+                className="border flex  justify-between px-10 py-2 mb-3 hover:bg-slate-100 cursor-auto border-gray-300 rounded-md"
+              >
+                <Link to={`/listing/${list._id}`}>
+                  <p className=" text-slate-700 font-semibold text-lg hover:underline my-2">
+                    {list.name}
+                  </p>
+
+                  <img
+                    src={list?.imageUrls[0]}
+                    alt="imageUrls-cover "
+                    className="h-60 object-cover rounded-xl "
+                  />
+                </Link>
+                <div className=" flex flex-col justify-between py-12 gap-7">
+                  <TiDeleteOutline className=" size-12  rounded-md text-red-700 cursor-pointer hover:bg-red-100 p-1" />
+                  <CiEdit className=" size-12 rounded-md p-2 text-blue-700 cursor-pointer hover:bg-blue-100 " />
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
