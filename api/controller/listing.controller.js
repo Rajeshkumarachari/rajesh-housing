@@ -5,7 +5,7 @@ export const createListing = async (req, res, next) => {
   try {
     const listing = await Listing.create(req.body);
 
-    res.status(201).json(listing);
+    return res.status(201).json(listing);
   } catch (error) {
     next(error);
   }
@@ -59,10 +59,10 @@ export const getListing = async (req, res, next) => {
   }
 };
 
-export const getAllListings = async (req, res, next) => {
+export const getListings = async (req, res, next) => {
   try {
-    const limit = req.query.limit || 9;
-    const startIndex = req.query.startIndex || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
     let offer = req.query.offer;
 
     if (offer === undefined || offer === "false") {
@@ -81,7 +81,7 @@ export const getAllListings = async (req, res, next) => {
     if (type === undefined || type === "false") {
       type = { $in: ["sale", "rent"] };
     }
-    const searchTerm = req.query.searchTerm;
+    const searchTerm = req.query.searchTerm || "";
     const sort = req.query.sort || "createdAt";
     const order = req.query.order || "desc";
 
@@ -95,7 +95,7 @@ export const getAllListings = async (req, res, next) => {
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
-    res.status(200).json(listing);
+    return res.status(200).json(listing);
   } catch (error) {
     next(error);
   }
